@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jev Playground
 
-## Getting Started
+A small Next.js app for experimenting with [TypeSafe AI](https://typesafe.ai)'s
+Jev model (System One). Paste a state, build any mix of **noul** (yes/no
+probability), **choice** (pick from options), and **score** (rate against a
+rubric) questions, and see the typed answers, probability distributions, and
+confidence in one shot — all questions are evaluated in parallel in a single
+request.
 
-First, run the development server:
+![Jev Playground](docs/screenshot.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Setup
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Get an API key from the [TypeSafe console](https://console.typesafe.ai/settings/keys).
+2. Put it in `.env.local`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   ```
+   TYPESAFE_API_KEY=ts-...
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Run the dev server:
 
-## Learn More
+   ```sh
+   npm install
+   npm run dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. Open http://localhost:3000, hit **Load sample** for the docs' support-ticket
+   example, then **Run** (or ⌘↵).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Plain text state is sent as a string; valid JSON is sent as structured state
+(see the [State docs](https://docs.typesafe.ai/concepts/state)).

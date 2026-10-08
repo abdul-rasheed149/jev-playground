@@ -11,6 +11,7 @@ type Ad = {
   runDurationDays?: number;
   sentimentLabel?: string;
   ctaType?: string;
+  ctaText?: string;
   landingUrl?: string;
   imageUrls?: string[];
   videoUrls?: string[];
@@ -164,9 +165,21 @@ export default function Home() {
                   </p>
                 )}
 
-                <p>
-                  <strong>CTA:</strong> {ad.ctaType || "N/A"}
-                </p>
+                <div
+                  style={{
+                    display: "inline-flex",
+                    gap: 8,
+                    alignItems: "center",
+                    padding: "8px 12px",
+                    marginBottom: 12,
+                    borderRadius: 6,
+                    background: "#111",
+                    color: "#fff",
+                    fontWeight: 600,
+                  }}
+                >
+                  CTA: {ad.ctaText || ad.ctaType || "N/A"}
+                </div>
 
                 <p>
                   <strong>Sentiment:</strong>{" "}

@@ -52,6 +52,9 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null);
+  const [personaAnalysis, setPersonaAnalysis] = useState<any>(null);
+  const [personaLoading, setPersonaLoading] = useState(false);
+  const [personaError, setPersonaError] = useState("");
   const [sort, setSort] = useState("newest");
   const [activeOnly, setActiveOnly] = useState(true);
 
@@ -94,7 +97,35 @@ export default function Home() {
       setLoading(false);
     }
   }
+  async function analyzePersona(ad: Ad) {
+  setPersonaLoading(true);
+  setPersonaError("");
+  setPersonaAnalysis(null);
 
+  try {
+    const response = await fetch("/api/persona-match", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ad }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Persona analysis failed");
+    }
+
+    setPersonaAnalysis(data);
+  } catch (error) {
+    setPersonaError(
+      error instanceof Error ? error.message : "Analysis failed"
+    );
+  } finally {
+    setPersonaLoading(false);
+  }
+}
   const filteredAds = useMemo(() => {
     let result = [...ads];
 
@@ -828,8 +859,10 @@ export default function Home() {
                       {/* ANALYZE */}
                       <button
                         className="view-button"
-                        onClick={() =>
-                          setSelectedAd(ad)
+                        onClick={() => {
+                          setSelectedAd(ad);
+                          analyzePersona(ad);
+                        }}
                         }
                       >
                         Analyze Persona →

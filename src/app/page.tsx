@@ -1028,35 +1028,120 @@ export default function Home() {
               </p>
 
             </div>
-
             <div className="analysis-box">
-
               <div className="analysis-title">
-                Persona Analysis
+                Jev Persona Match Analysis
               </div>
-
-              <p style={{ color: "#a1a1aa" }}>
-                Jev analysis will be connected here.
-                This section will generate:
-              </p>
-
-              <ul
-                style={{
-                  color: "#d4d4d8",
-                  lineHeight: 1.8,
-                }}
-              >
-                <li>Target persona</li>
-                <li>Demographic signals</li>
-                <li>Pain points</li>
-                <li>Desires and motivations</li>
-                <li>Purchase intent</li>
-                <li>Objections</li>
-                <li>Messaging angle</li>
-                <li>Creative angle</li>
-                <li>Persona match score</li>
-              </ul>
-
+            
+              {personaLoading && (
+                <p>Analyzing creative against all personas...</p>
+              )}
+            
+              {personaError && (
+                <p style={{ color: "#fca5a5" }}>
+                  Analysis failed: {personaError}
+                </p>
+              )}
+            
+              {!personaLoading && !personaError && !personaAnalysis && (
+                <p style={{ color: "#a1a1aa" }}>
+                  Click Analyze Persona on an ad to see its likely target
+                  persona and matching evidence.
+                </p>
+              )}
+            
+              {personaAnalysis && (
+                <>
+                  {personaAnalysis.primary_persona && (
+                    <div style={{ marginBottom: 18 }}>
+                      <div className="analysis-title">
+                        Primary Target Persona
+                      </div>
+            
+                      <h3>
+                        {personaAnalysis.primary_persona.persona_name}
+                      </h3>
+            
+                      <p style={{ color: "#d4d4d8", lineHeight: 1.6 }}>
+                        {JSON.stringify(
+                          personaAnalysis.primary_persona.marketing_interpretation
+                        )}
+                      </p>
+                    </div>
+                  )}
+            
+                  {personaAnalysis.insufficient_evidence && (
+                    <p style={{ color: "#fbbf24" }}>
+                      Jev could not confidently select a primary persona.
+                      Review the ranked scores below.
+                    </p>
+                  )}
+            
+                  <div className="analysis-title">
+                    Ranked Persona Matches
+                  </div>
+            
+                  {personaAnalysis.ranked_matches?.map((match: any) => (
+                    <div
+                      key={match.persona_id}
+                      style={{
+                        border: "1px solid #3f3f46",
+                        borderRadius: 10,
+                        padding: 12,
+                        marginBottom: 10
+                      }}
+                    >
+                      <strong>
+                        {match.is_primary ? "★ " : ""}
+                        {match.persona_name}
+                      </strong>
+            
+                      <p style={{ marginBottom: 6 }}>
+                        Match score: {match.score ?? "N/A"} / 4
+                      </p>
+            
+                      <p style={{ color: "#a1a1aa", fontSize: 12 }}>
+                        Model confidence:{" "}
+                        {match.confidence == null
+                          ? "N/A"
+                          : `${Math.round(match.confidence * 100)}%`}
+                      </p>
+            
+                      <details>
+                        <summary style={{ cursor: "pointer" }}>
+                          View persona profile
+                        </summary>
+            
+                        <pre
+                          style={{
+                            whiteSpace: "pre-wrap",
+                            overflowWrap: "anywhere",
+                            color: "#d4d4d8",
+                            fontSize: 12
+                          }}
+                        >
+                          {JSON.stringify(
+                            {
+                              profile: match.profile,
+                              behavior: match.behavior,
+                              marketing_interpretation:
+                                match.marketing_interpretation
+                            },
+                            null,
+                            2
+                          )}
+                        </pre>
+                      </details>
+                    </div>
+                  ))}
+            
+                  {personaAnalysis.limitations?.length > 0 && (
+                    <p style={{ color: "#a1a1aa", fontSize: 12 }}>
+                      Limitations: {personaAnalysis.limitations.join(" ")}
+                    </p>
+                  )}
+                </>
+              )}
             </div>
 
           </aside>

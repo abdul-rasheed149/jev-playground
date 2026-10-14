@@ -857,15 +857,14 @@ export default function Home() {
                       </div>
 
                       {/* ANALYZE */}
-                      <button
-                        className="view-button"
-                        onClick={() => {
-                          setSelectedAd(ad);
-                          analyzePersona(ad);
-                        }}
-                        }
-                      >
-                        Analyze Persona →
+                      <button       
+                        className="view-button"       
+                        onClick={() => {         
+                          setSelectedAd(ad);         
+                          analyzePersona(ad);       
+                        }}     
+                        >       
+                        Analyze Persona →     
                       </button>
 
                     </div>

@@ -1,7 +1,6 @@
 
 import { NextResponse } from "next/server";
-import personasData from "../../../../../data/personas_ml_v2.json";
-
+import personasData from "../../../../data/personas_ml_v2.json";
 export async function GET() {
   try {
     return NextResponse.json(personasData);
